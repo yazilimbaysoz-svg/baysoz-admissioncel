@@ -1,0 +1,56 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "baysoz-admissioncel"
+version = "1.0.0"
+description = "Offline Kubernetes ValidatingAdmissionPolicy CEL conformance oracle with adversarial fixture forging and deterministic SARIF CI gates - Baysöz Labs <baysozlabs@proton.me>"
+readme = "README.md"
+requires-python = ">=3.13"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Baysöz Labs", email = "baysozlabs@proton.me" },
+]
+keywords = [
+  "kubernetes",
+  "admission-policy",
+  "cel",
+  "validatingadmissionpolicy",
+  "sarif",
+  "devops-platform",
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Quality Assurance",
+  "Topic :: System :: Systems Administration",
+]
+dependencies = [
+  "cel-python>=0.4,<1",
+  "PyYAML>=6.0.2,<7",
+]
+
+[project.urls]
+Homepage = "https://github.com/yazilimbaysoz-svg/baysoz-admissioncel"
+Issues = "https://github.com/yazilimbaysoz-svg/baysoz-admissioncel/issues"
+
+[project.scripts]
+baysoz-admissioncel = "baysoz_admissioncel.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/baysoz_admissioncel"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "S", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]

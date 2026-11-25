@@ -1,0 +1,7 @@
+# Baysöz Labs <baysozlabs@proton.me>
+apiVersion: admission.baysozlabs.dev/v1
+kind: AdmissionPolicyParams
+metadata:
+  name: registry-policy
+  namespace: default
+allowedRegistry: "registry.example.invalid/"

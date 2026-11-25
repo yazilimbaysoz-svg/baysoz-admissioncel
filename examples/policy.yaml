@@ -1,0 +1,44 @@
+# Baysöz Labs <baysozlabs@proton.me>
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: deny-privileged-workloads
+spec:
+  failurePolicy: Fail
+  matchPolicy: Exact
+  paramKind:
+    apiVersion: admission.baysozlabs.dev/v1
+    kind: AdmissionPolicyParams
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+        scope: Namespaced
+  variables:
+    - name: privileged
+      expression: >-
+        object.spec.containers.exists(c,
+        has(c.securityContext) && c.securityContext.privileged == true)
+  validations:
+    - expression: "!variables.privileged"
+      message: "privileged containers are denied"
+      reason: Forbidden
+    - expression: >-
+        object.spec.containers.all(c,
+        c.image.startsWith(params.allowedRegistry))
+      message: "container image registry is not allowlisted"
+      reason: Forbidden
+---
+# Baysöz Labs <baysozlabs@proton.me>
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: deny-privileged-workloads-binding
+spec:
+  policyName: deny-privileged-workloads
+  paramRef:
+    name: registry-policy
+    namespace: default
+  validationActions: [Deny]

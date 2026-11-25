@@ -1,0 +1,57 @@
+# Baysöz Labs <baysozlabs@proton.me>
+apiVersion: admission.baysozlabs.dev/v1
+kind: AdmissionFixture
+metadata:
+  name: allow-compliant-pod
+spec:
+  apiVersion: v1
+  kind: Pod
+  operation: CREATE
+  namespaceLabels:
+    team: platform
+  object:
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: compliant-pod
+      namespace: default
+      labels:
+        app: demo
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: app
+          image: registry.example.invalid/app:1
+          securityContext:
+            privileged: false
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+---
+# Baysöz Labs <baysozlabs@proton.me>
+apiVersion: admission.baysozlabs.dev/v1
+kind: AdmissionFixture
+metadata:
+  name: deny-unlisted-registry-pod
+spec:
+  apiVersion: v1
+  kind: Pod
+  operation: CREATE
+  namespaceLabels:
+    team: platform
+  object:
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: unlisted-registry-pod
+      namespace: default
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: app
+          image: docker.io/library/app:latest
+          securityContext:
+            privileged: false
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
