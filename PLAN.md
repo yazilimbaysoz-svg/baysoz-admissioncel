@@ -40,9 +40,11 @@ Baysöz Labs <baysozlabs@proton.me>
   detection, output determinism, and security gates.
 - Result: UNANIMOUS PASS (5/5), nine rule IDs detected, byte-identical SARIF.
 
-## Phase 6 — Publication and showcase result (in progress)
+## Phase 6 — Publication and showcase result (complete)
 
 - Public repository under `yazilimbaysoz-svg` with description and topics.
 - Strict JSON result written only to the designated showcase file.
+- Published URL:
+  https://github.com/yazilimbaysoz-svg/baysoz-admissioncel
 
 Baysöz Labs <baysozlabs@proton.me>
